@@ -1,5 +1,5 @@
 # Aegle
-Testing the effect of different colors and brightness on reaction time.
+Aegle is an software for testing the effect of different colors and brightness on reaction time.
 
 ## support system
 * Windows
