@@ -160,6 +160,9 @@ class App:
         
         elif color == [255, 0, 170]:
             return "玫瑰紅色"
+        
+        else:
+            return " "
 
     def _show_image(self, image):
         self.background = self.background.convert()
