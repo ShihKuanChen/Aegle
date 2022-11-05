@@ -1,7 +1,7 @@
 # Aegle
 Aegle is an software for testing the effect of different colors and brightness on reaction time.
 
-## support system
+## Support system
 * Windows
 * macOS
 * Linux (coming soon)
