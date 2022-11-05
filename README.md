@@ -1,12 +1,14 @@
 # Aegle
-## 簡介
-Aegle是一個用以測試不同顏色與亮度對於反應時間的影響
+## Introduction
+Aegle is a software for testing the effect of different colors and brightness on reaction time.
 
-## 先決條件
+## support system
+* Windows
+* macOS
+* Linux (coming soon)
+
+## How to use
 ...
 
-## 使用方法
-...
-
-## 注意事項
+## Notes
 ...
