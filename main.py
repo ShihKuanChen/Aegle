@@ -17,8 +17,9 @@ class App:
         self.mode = mode
         self.memory = []
         self.tessellated_path = './images/tessellated.png'
+        self.log = []
 
-        self.read_question('./question.txt')
+        self._read_question('./question.txt')
 
         if title == None:
             title = 'My pygame'
@@ -59,12 +60,12 @@ class App:
         self.background = self.background.convert()
         self.background.fill((255, 255, 255))
         self.window.blit(self.background, (0, 0))
-        self.update()
+        self._update()
 
     def __call__(self):
-        self.game_loop()
+        self._game_loop()
     
-    def game_loop(self):
+    def _game_loop(self):
         for path in self.start_img_path:
             self.done = False
 
@@ -75,9 +76,9 @@ class App:
 
             while not self.done:
                 self.clock.tick(self.fps)
-                self.update()
-                self.is_done()
-                self.get_user_input()
+                self._update()
+                self._is_done()
+                self._get_user_input()
 
         if self.mode == 3:
             self.background.blit(self.waiting_screen, (0, 0))
@@ -86,7 +87,7 @@ class App:
             self.background.fill(self.waiting_screen)
 
         self.window.blit(self.background, (0, 0))
-        self.update()
+        self._update()
 
         for index in range(len(self.random_indexs)):
             self.done = False
@@ -100,20 +101,22 @@ class App:
             self.background.fill(self.question[self.random_indexs[index]])
             self.window.blit(self.background, (0, 0))
 
-            self.update()
+            self._update()
 
             while not self.done:
                 self.clock.tick(self.fps)
-                self.update()
-                self.is_done()
-                self.get_user_input()
+                self._update()
+                self._is_done()
+                self._get_user_input()
 
                 if self.done:
                     time_b = time.time()
-                    print(f'''{self.question[self.random_indexs[index]]} time: {time_b - time_a}''')
+                    reaction_time = time_b - time_a
+                    print(f"{self.question[self.random_indexs[index]]} time: {reaction_time}")
                     
                     if index != 0:
-                        self.write_log(self.question[self.random_indexs[index]], self.mode, time_b - time_a)
+                        # self._write_log_file(self.question[self.random_indexs[index]], self.mode, reaction_time)
+                        self._write_log(self.question[self.random_indexs[index]], self.mode, reaction_time)
 
             self.background = self.background.convert()
             if self.mode == 3:
@@ -121,33 +124,41 @@ class App:
 
             else:
                 self.background.fill(self.waiting_screen)
+
             self.window.blit(self.background, (0, 0))
-            self.update()
+            self._update()
 
-        pygame.quit()
-
-        self.write_log(self.divider, self.divider[0], self.divider[0])
+        self._done()
         print('測試結束!')
     
-    def write_log(self, rgb, mode, time):
+    def _write_log_file(self, rgb, mode, time):
         with open(self.log_path, "a") as f:
-            f.write(f"{rgb[0]},{rgb[0]},{rgb[0]},{mode},{time}\n")
+            f.write(f"{rgb[0]},{rgb[1]},{rgb[2]},{mode},{time}\n")
+
+    def _write_log(self, rgb, mode, time):
+        self.log.append((rgb, mode, time))
     
-    def add_memory(self, data):
+    def _sort(self, data):
+        output = sorted(data, key = lambda x: x[2])
+        return output
+    
+    def _add_memory(self, data):
         self.memory.append(data)
+
         if len(self.memory) >= self.memory_size:
             self.memory.pop(0)
     
-    def get_user_input(self):
+    def _get_user_input(self):
         all_key = pygame.key.get_pressed()
+
         if all_key[pygame.K_SPACE] and True not in self.memory:
-            self.add_memory(True)
+            self._add_memory(True)
             self.done = True
         
         else:
-            self.add_memory(False)
+            self._add_memory(False)
 
-    def read_question(self, path):
+    def _read_question(self, path):
         question = []
         with open(path, 'r') as f:
             file = f.read()
@@ -160,12 +171,21 @@ class App:
 
             self.question = question
     
-    def is_done(self):
+    def _is_done(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                pygame.quit()
+                self._done()
 
-    def update(self):
+    def _done(self):
+        self.log = self._sort(self.log)
+        
+        for data in self.log:
+            self._write_log_file(data[0], data[1], data[2])
+        
+        self._write_log_file(self.divider, self.divider[0], self.divider[0])
+        pygame.quit()
+
+    def _update(self):
         pygame.display.update()
 
 if __name__ == '__main__':
@@ -178,8 +198,8 @@ if __name__ == '__main__':
     question_path = './question.txt'
     mode = int(input('請輸入模式, 1 = 白色, 2 = 黑色, 3 = 棋盤格: '))
 
-    app = App(width, height, full_screen, fps, memory_size, log_path, question_path, [
-        './images/start1.png',
-        './images/start2.png'], mode, 'experiment')
+    app = App(
+        width, height, full_screen, fps, memory_size, log_path, question_path,
+        ['./images/start1.png', './images/start2.png'], mode, 'experiment')
 
     app()
