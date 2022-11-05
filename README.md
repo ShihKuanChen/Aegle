@@ -8,7 +8,15 @@ Aegle is an software for testing the effect of different colors and brightness o
 * Linux (coming soon)
 
 ## How to use
-...
+### Windows
+1. unzip the file.
+2. open the terminal.
+3. cd to your file path.
+4. type `.\python .\main.py`
 
 ## Notes
-...
+* the log file path is `.\log.txt`
+* the log file format is `R,G,B,Mode,Color(Chinese),Time`
+* the mode in the log file is 1 = white, 2 = black, 3 = checkerboard
+* the question file path is `.\question.txt`
+* the question file format is `R,G,B`
