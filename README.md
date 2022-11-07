@@ -15,8 +15,8 @@ Aegle is an software for testing the effect of different colors and brightness o
 4. type `.\python .\main.py`
 
 ## Notes
-* the log file path is `.\log.txt`
+* the log file path is `.\file\log.txt`
 * the log file format is `R,G,B,Mode,Color(Chinese),Time`
 * the mode in the log file is 1 = white, 2 = black, 3 = checkerboard
-* the question file path is `.\question.txt`
+* the question file path is `.\file\question.txt`
 * the question file format is `R,G,B`
