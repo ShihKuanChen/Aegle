@@ -4,8 +4,6 @@ Aegle is an software for testing the effect of different colors and brightness o
 
 ## Support system
 * Windows
-* macOS (coming soon)
-* Linux (coming soon)
 
 ## How to use
 ### Windows
